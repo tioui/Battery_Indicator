@@ -41,6 +41,7 @@ feature {NONE} -- Initialization
 			create on_critical_action
 			create on_update
 			create timer.make_with_interval (10000)
+			timer.actions.extend (agent update)
 			l_value := read_line_from_file(File_energy_full,True)
 			if l_value.is_natural_64 then
 				max_energy := l_value.to_natural_64

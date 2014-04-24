@@ -58,7 +58,7 @@ feature {NONE} -- Initialization
 			message_label.align_text_left
 
 			create pixmap
-			pixmap.copy(create {EV_PIXMAP}.make_with_pixel_buffer (create {BATTERY_FULL}.make))
+			pixmap.copy(create {EV_PIXMAP}.make_with_pixel_buffer (create {BATTERY_FULL_BUFFER}.make))
 			pixmap.set_minimum_size (pixmap.width, pixmap.height)
 
 			create horizontal_separator

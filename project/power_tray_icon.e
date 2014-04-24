@@ -49,39 +49,39 @@ feature -- Access
 		end
 
 	set_full_icon
-			-- Change `Current' image to {BATTERY_FULL}
+			-- Change `Current' image to {BATTERY_FULL_BUFFER}
 		do
-			change_icon(create {BATTERY_FULL}.make)
+			change_icon(create {BATTERY_FULL_BUFFER}.make)
 		end
 
 	set_high_icon
-			-- Change `Current' image to {BATTERY_HIGH}
+			-- Change `Current' image to {BATTERY_HIGH_BUFFER}
 		do
-			change_icon(create {BATTERY_HIGH}.make)
+			change_icon(create {BATTERY_HIGH_BUFFER}.make)
 		end
 
 	set_half_icon
-			-- Change `Current' image to {BATTERY_HALF}
+			-- Change `Current' image to {BATTERY_HALF_BUFFER}
 		do
-			change_icon(create {BATTERY_HALF}.make)
+			change_icon(create {BATTERY_HALF_BUFFER}.make)
 		end
 
 	set_low_icon
-			-- Change `Current' image to {BATTERY_LOW}
+			-- Change `Current' image to {BATTERY_LOW_BUFFER}
 		do
-			change_icon(create {BATTERY_LOW}.make)
+			change_icon(create {BATTERY_LOW_BUFFER}.make)
 		end
 
 	set_very_low_icon
-			-- Change `Current' image to {BATTERY_VERY_LOW}
+			-- Change `Current' image to {BATTERY_VERY_LOW_BUFFER}
 		do
-			change_icon(create {BATTERY_VERY_LOW}.make)
+			change_icon(create {BATTERY_VERY_LOW_BUFFER}.make)
 		end
 
 	set_critical_icon
-			-- Change `Current' image to {BATTERY_CRITICAL}
+			-- Change `Current' image to {BATTERY_CRITICAL_BUFFER}
 		do
-			change_icon(create {BATTERY_CRITICAL}.make)
+			change_icon(create {BATTERY_CRITICAL_BUFFER}.make)
 		end
 
 feature {NONE} -- Implementation
