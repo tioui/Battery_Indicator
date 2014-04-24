@@ -10,6 +10,7 @@ class
 inherit
 	EV_APPLICATION
 		redefine
+			create_interface_objects,
 			initialize
 		end
 	INTERFACE_NAMES
@@ -30,6 +31,13 @@ feature {NONE} -- Initialization
 			launch
 		end
 
+	create_interface_objects
+			-- <Precursor>
+		do
+			Precursor {EV_APPLICATION}
+			create tray_icon.make
+		end
+
 	initialize
 			-- <Precursor>
 		local
@@ -37,7 +45,6 @@ feature {NONE} -- Initialization
 		do
 			Precursor {EV_APPLICATION}
 			create l_battery
-			create tray_icon.make
 			l_battery.on_full_action.extend (agent tray_icon.set_full_icon)
 			l_battery.on_high_action.extend (agent tray_icon.set_high_icon)
 			l_battery.on_half_action.extend (agent tray_icon.set_half_icon)
@@ -54,7 +61,7 @@ feature {NONE} -- Initialization
 feature {NONE} -- Implementation
 
 	tray_icon: POWER_TRAY_ICON
-			-- The visual icon to ut in the trau
+			-- The visual icon to put in the tray bar
 
 	on_click_tray_icon
 			-- Called when the user click on the `tray_icon'.

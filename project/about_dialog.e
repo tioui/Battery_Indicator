@@ -31,6 +31,8 @@ feature {NONE} -- Initialization
 		do
 			Precursor
 			create ok_button.make_with_text (Button_ok_item)
+			create message_label
+			create pixmap
 		end
 
 	initialize
@@ -53,11 +55,8 @@ feature {NONE} -- Initialization
 				--| into another container.
 
 
-
-			create message_label
 			message_label.align_text_left
 
-			create pixmap
 			pixmap.copy(create {EV_PIXMAP}.make_with_pixel_buffer (create {BATTERY_FULL_BUFFER}.make))
 			pixmap.set_minimum_size (pixmap.width, pixmap.height)
 
