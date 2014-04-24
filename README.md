@@ -19,7 +19,7 @@ has been compile with EiffelStudio 13.11, but it should work with other version 
 
 ***
 
-From here, the compilation is quite easy. Get and compile:
+From here, the compilation is quite easy. Download and compile:
 
 ***
 
