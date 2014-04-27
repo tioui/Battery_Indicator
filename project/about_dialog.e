@@ -149,7 +149,7 @@ feature {NONE} -- Implementation / Constants
 			-- Default title for the dialog window.
 
 	Default_message: STRING =
-		"Louis Marchand (R) Battery Indicator%N%
+		"Battery Indicator%N%
 		%Version 0.5%N%
 		%%N%
 		%Copyleft (C) 2014 Louis Marchand"
