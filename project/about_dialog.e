@@ -11,7 +11,8 @@ inherit
 	EV_DIALOG
 		redefine
 			create_interface_objects,
-			initialize
+			initialize,
+			user_can_resize_default_state
 		end
 
 	INTERFACE_NAMES
@@ -29,7 +30,7 @@ feature {NONE} -- Initialization
 	create_interface_objects
 			-- <Precursor>
 		do
-			Precursor
+			Precursor {EV_DIALOG}
 			create ok_button.make_with_text (Button_ok_item)
 			create message_label
 			create pixmap
@@ -106,6 +107,7 @@ feature {NONE} -- Initialization
 			set_title (Default_title)
 			set_message (Default_message)
 			set_size (400, 150)
+			disable_user_resize
 		end
 
 feature -- Access
@@ -134,6 +136,12 @@ feature {NONE} -- Implementation
 
 	ok_button: EV_BUTTON
 			-- "OK" button.
+
+	user_can_resize_default_state:BOOLEAN
+			-- <Precursor>
+		do
+			Result := False
+		end
 
 feature {NONE} -- Implementation / Constants
 
