@@ -163,39 +163,51 @@ feature -- Access
 		do
 			update_energy
 			on_update.call([Current])
-			if is_full and not is_full_action_called then
-				on_full_action.call ([])
-				is_full_action_called := True
+			if is_full then
+				if not is_full_action_called then
+					on_full_action.call ([])
+					is_full_action_called := True
+				end
 			else
 				is_full_action_called := False
 			end
-			if is_high and not is_high_action_called then
-				on_high_action.call ([])
-				is_high_action_called := True
+			if is_high then
+				if not is_high_action_called then
+					on_high_action.call ([])
+					is_high_action_called := True
+				end
 			else
 				is_high_action_called := False
 			end
-			if is_half and not is_half_action_called then
-				on_half_action.call ([])
-				is_half_action_called := True
+			if is_half then
+				if not is_half_action_called then
+					on_half_action.call ([])
+					is_half_action_called := True
+				end
 			else
 				is_half_action_called := False
 			end
-			if is_low and not is_low_action_called then
-				on_low_action.call ([])
-				is_low_action_called := True
+			if is_low then
+				if not is_low_action_called then
+					on_low_action.call ([])
+					is_low_action_called := True
+				end
 			else
 				is_low_action_called := False
 			end
-			if is_very_low and not is_very_low_action_called then
-				on_very_low_action.call ([])
-				is_very_low_action_called := True
+			if is_very_low then
+				if not is_very_low_action_called then
+					on_very_low_action.call ([])
+					is_very_low_action_called := True
+				end
 			else
 				is_very_low_action_called := False
 			end
-			if is_critical and not is_critical_action_called then
-				on_critical_action.call ([])
-				is_critical_action_called := True
+			if is_critical then
+				if not is_critical_action_called then
+					on_critical_action.call ([])
+					is_critical_action_called := True
+				end
 			else
 				is_critical_action_called := False
 			end

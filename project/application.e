@@ -52,7 +52,7 @@ feature {NONE} -- Initialization
 			l_battery.on_very_low_action.extend (agent tray_icon.set_very_low_icon)
 			l_battery.on_critical_action.extend (agent tray_icon.set_critical_icon)
 			l_battery.on_update.extend (agent tray_icon.set_power_tooltip)
-			l_battery.on_critical_action.extend (agent on_low_power)
+			l_battery.on_critical_action.extend (agent on_low_power(l_battery))
 			tray_icon.activate_action.extend (agent on_click_tray_icon)
 			tray_icon.popup_action.extend (agent on_click_tray_icon)
 			l_battery.update
@@ -94,15 +94,17 @@ feature {NONE} -- Implementation
 			l_env.sleep (100000000)
 		end
 
-	on_low_power
+	on_low_power(a_battery:BATTERY_DEVICE)
 			-- Raise a message to the user when the battery energy became criticaly low.
 		local
 			l_message_box:EV_MESSAGE_DIALOG
 		do
-			create l_message_box.make_with_text (Warning_low_battery)
-			l_message_box.set_buttons_and_actions (<<Button_ok_item>>, <<agent l_message_box.destroy>>)
-			l_message_box.show
-			l_message_box.raise
+			if a_battery.is_discharging then
+				create l_message_box.make_with_text (Warning_low_battery)
+				l_message_box.set_buttons_and_actions (<<Button_ok_item>>, <<agent l_message_box.destroy>>)
+				l_message_box.show
+				l_message_box.raise
+			end
 		end
 
 	show_about
