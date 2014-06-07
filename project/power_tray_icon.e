@@ -88,11 +88,8 @@ feature {NONE} -- Implementation
 
 	change_icon(a_icon_buffer: EV_PIXEL_BUFFER)
 			-- Set the image icon of `Current' using `a_icon_buffer' as source.
-		local
-			l_icon_pixmap:EV_PIXMAP
 		do
-			create l_icon_pixmap.make_with_pixel_buffer (a_icon_buffer)
-			set_icon_from_pixmap (l_icon_pixmap)
+			set_icon_from_pixmap (create {EV_PIXMAP}.make_with_pixel_buffer (a_icon_buffer))
 		end
 
 end

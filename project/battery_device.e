@@ -18,11 +18,6 @@ inherit
 			default_create
 		end
 
-	EXCEPTIONS
-		undefine
-			default_create
-		end
-
 create
 	default_create
 
@@ -47,7 +42,7 @@ feature {NONE} -- Initialization
 				max_energy := l_value.to_natural_64
 			else
 				io.put_string (Error_protocol_not_supported + "%N")
-				die(4)
+				(create {EXCEPTIONS}).die(4)
 			end
 			is_full_action_called := False
 			is_high_action_called := False
@@ -73,7 +68,7 @@ feature -- Access
 				percentage := ((energy * 100) // max_energy).to_natural_8
 			else
 				io.put_string (Error_protocol_not_supported + "%N")
-				die(4)
+				(create {EXCEPTIONS}).die(4)
 			end
 		end
 
@@ -137,22 +132,22 @@ feature -- Access
 	max_energy:NATURAL_64
 			-- The maximum energy capacity of `Current'
 
-	on_full_action:ACTION_SEQUENCE[TUPLE[]]
+	on_full_action:ACTION_SEQUENCE[TUPLE]
 			-- Called when `Current' `energy' became full.
 
-	on_high_action:ACTION_SEQUENCE[TUPLE[]]
+	on_high_action:ACTION_SEQUENCE[TUPLE]
 			-- Called when `Current' `energy' became high.
 
-	on_half_action:ACTION_SEQUENCE[TUPLE[]]
+	on_half_action:ACTION_SEQUENCE[TUPLE]
 			-- Called when `Current' `energy' became half it's capacity.
 
-	on_low_action:ACTION_SEQUENCE[TUPLE[]]
+	on_low_action:ACTION_SEQUENCE[TUPLE]
 			-- Called when `Current' `energy' became low.
 
-	on_very_low_action:ACTION_SEQUENCE[TUPLE[]]
+	on_very_low_action:ACTION_SEQUENCE[TUPLE]
 			-- Called when `Current' `energy' became very low.
 
-	on_critical_action:ACTION_SEQUENCE[TUPLE[]]
+	on_critical_action:ACTION_SEQUENCE[TUPLE]
 			-- Called when `Current' `energy' became criticaly low.
 
 	on_update:ACTION_SEQUENCE[TUPLE[battery:like Current]]
@@ -163,54 +158,12 @@ feature -- Access
 		do
 			update_energy
 			on_update.call([Current])
-			if is_full then
-				if not is_full_action_called then
-					on_full_action.call ([])
-					is_full_action_called := True
-				end
-			else
-				is_full_action_called := False
-			end
-			if is_high then
-				if not is_high_action_called then
-					on_high_action.call ([])
-					is_high_action_called := True
-				end
-			else
-				is_high_action_called := False
-			end
-			if is_half then
-				if not is_half_action_called then
-					on_half_action.call ([])
-					is_half_action_called := True
-				end
-			else
-				is_half_action_called := False
-			end
-			if is_low then
-				if not is_low_action_called then
-					on_low_action.call ([])
-					is_low_action_called := True
-				end
-			else
-				is_low_action_called := False
-			end
-			if is_very_low then
-				if not is_very_low_action_called then
-					on_very_low_action.call ([])
-					is_very_low_action_called := True
-				end
-			else
-				is_very_low_action_called := False
-			end
-			if is_critical then
-				if not is_critical_action_called then
-					on_critical_action.call ([])
-					is_critical_action_called := True
-				end
-			else
-				is_critical_action_called := False
-			end
+			check_for_full_state
+			check_for_high_state
+			check_for_half_state
+			check_for_low_state
+			check_for_very_low_state
+			check_for_critical_state
 		end
 
 feature {NONE} -- Implementation
@@ -238,9 +191,10 @@ feature {NONE} -- Implementation
 
 	read_line_from_file(a_file_name:READABLE_STRING_GENERAL; a_fatal:BOOLEAN):READABLE_STRING_GENERAL
 			-- Return the first line of the file whith the name `a_file_name'.
-			-- Die with code 3 if `a_fatal' is set
+			-- Die with code 3 on error if `a_fatal' is set
 		local
 			l_file:PLAIN_TEXT_FILE
+			l_exceptions:EXCEPTIONS
 		do
 			create l_file.make_with_name (a_file_name)
 			if l_file.exists and then l_file.is_readable then
@@ -252,9 +206,94 @@ feature {NONE} -- Implementation
 				Result := ""
 				if a_fatal then
 					io.put_string (Error_file_not_readable + " (" + a_file_name + ").%N")
-					die (3)
+					(create {EXCEPTIONS}).die(3)
 				end
 			end
 		end
+
+	check_for_full_state
+			-- Confirm that `Current' is in full power state and call the
+			-- callback `on_full_action' if it has not been already called.
+		do
+			if is_full then
+				if not is_full_action_called then
+					on_full_action.call ([])
+					is_full_action_called := True
+				end
+			else
+				is_full_action_called := False
+			end
+		end
+
+	check_for_high_state
+			-- Confirm that `Current' is in high power state and call the
+			-- callback `on_full_action' if it has not been already called.
+		do
+			if is_high then
+				if not is_high_action_called then
+					on_high_action.call ([])
+					is_high_action_called := True
+				end
+			else
+				is_high_action_called := False
+			end
+		end
+
+	check_for_half_state
+			-- Confirm that `Current' is in half power state and call the
+			-- callback `on_full_action' if it has not been already called.
+		do
+			if is_half then
+				if not is_half_action_called then
+					on_half_action.call ([])
+					is_half_action_called := True
+				end
+			else
+				is_half_action_called := False
+			end
+		end
+
+	check_for_low_state
+			-- Confirm that `Current' is in low power state and call the
+			-- callback `on_full_action' if it has not been already called.
+		do
+			if is_low then
+				if not is_low_action_called then
+					on_low_action.call ([])
+					is_low_action_called := True
+				end
+			else
+				is_low_action_called := False
+			end
+		end
+
+	check_for_very_low_state
+			-- Confirm that `Current' is in very low power state and call the
+			-- callback `on_full_action' if it has not been already called.
+		do
+			if is_very_low then
+				if not is_very_low_action_called then
+					on_very_low_action.call ([])
+					is_very_low_action_called := True
+				end
+			else
+				is_very_low_action_called := False
+			end
+		end
+
+	check_for_critical_state
+			-- Confirm that `Current' is in critical power state and call the
+			-- callback `on_full_action' if it has not been already called.
+		do
+			if is_critical then
+				if not is_critical_action_called then
+					on_critical_action.call ([])
+					is_critical_action_called := True
+				end
+			else
+				is_critical_action_called := False
+			end
+		end
+
 
 end

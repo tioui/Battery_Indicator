@@ -56,12 +56,15 @@ feature {NONE} -- Initialization
 			tray_icon.activate_action.extend (agent on_click_tray_icon)
 			tray_icon.popup_action.extend (agent on_click_tray_icon)
 			l_battery.update
+			battery := l_battery
 		end
 
 feature {NONE} -- Implementation
 
 	tray_icon: POWER_TRAY_ICON
 			-- The visual icon to put in the tray bar
+
+	battery:detachable BATTERY_DEVICE
 
 	on_click_tray_icon
 			-- Called when the user click on the `tray_icon'.
@@ -109,11 +112,8 @@ feature {NONE} -- Implementation
 
 	show_about
 			-- Show the program about dialog.
-		local
-			l_about_dialog:ABOUT_DIALOG
 		do
-			create l_about_dialog
-			l_about_dialog.show
+			(create {ABOUT_DIALOG}).show
 		end
 
 	destroying

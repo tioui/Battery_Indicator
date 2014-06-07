@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-12-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-12-0 http://www.eiffel.com/developers/xml/configuration-1-12-0.xsd" name="battery_indicator" uuid="B2D807E1-F2FB-495A-BAE8-B2642AA2F25C">
+<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-13-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-13-0 http://www.eiffel.com/developers/xml/configuration-1-13-0.xsd" name="battery_indicator" uuid="B2D807E1-F2FB-495A-BAE8-B2642AA2F25C">
 	<target name="battery_indicator">
 		<root cluster="root_cluster" class="APPLICATION" feature="make_and_launch"/>
 		<option warning="true" void_safety="all">
@@ -7,7 +7,7 @@
 		</option>
 		<precompile name="vision2_pre" location="$ISE_PRECOMP\vision2-safe.ecf"/>
 		<library name="base" location="$ISE_LIBRARY\library\base\base-safe.ecf"/>
-		<library name="tray_icon" location="..\Eiffel_Tray_Icon\library\tray_icon-safe.ecf" readonly="false"/>
+		<library name="tray_icon" location="..\Eiffel_Tray_Icon\library\tray_icon-safe.ecf"/>
 		<library name="vision2" location="$ISE_LIBRARY\library\vision2\vision2-safe.ecf"/>
 		<cluster name="root_cluster" location=".\" recursive="true">
 			<file_rule>
