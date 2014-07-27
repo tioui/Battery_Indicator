@@ -28,6 +28,7 @@ feature {NONE} -- Initialization
 		local
 			l_value:READABLE_STRING_GENERAL
 		do
+			last_state := "~"
 			create on_full_action
 			create on_high_action
 			create on_half_action
@@ -35,14 +36,15 @@ feature {NONE} -- Initialization
 			create on_very_low_action
 			create on_critical_action
 			create on_update
-			create timer.make_with_interval (10000)
+			create on_state_change_action
+			create timer.make_with_interval (1000)
 			timer.actions.extend (agent update)
 			l_value := read_line_from_file(File_energy_full,True)
 			if l_value.is_natural_64 then
 				max_energy := l_value.to_natural_64
 			else
 				io.put_string (Error_protocol_not_supported + "%N")
-				(create {EXCEPTIONS}).die(4)
+				(create {EXCEPTIONS}).die(1)
 			end
 			is_full_action_called := False
 			is_high_action_called := False
@@ -50,6 +52,7 @@ feature {NONE} -- Initialization
 			is_low_action_called := False
 			is_very_low_action_called := False
 			is_critical_action_called := False
+
 		end
 
 feature -- Access
@@ -68,7 +71,7 @@ feature -- Access
 				percentage := ((energy * 100) // max_energy).to_natural_8
 			else
 				io.put_string (Error_protocol_not_supported + "%N")
-				(create {EXCEPTIONS}).die(4)
+				(create {EXCEPTIONS}).die(2)
 			end
 		end
 
@@ -150,20 +153,34 @@ feature -- Access
 	on_critical_action:ACTION_SEQUENCE[TUPLE]
 			-- Called when `Current' `energy' became criticaly low.
 
+	on_state_change_action:ACTION_SEQUENCE[TUPLE]
+			-- Called when `Current' `state' change.
+
 	on_update:ACTION_SEQUENCE[TUPLE[battery:like Current]]
 			-- When a device reading is done
 
 	update
 			-- Read device and update `Current' `energy'
+		local
+			l_retry_count:INTEGER
 		do
-			update_energy
-			on_update.call([Current])
-			check_for_full_state
-			check_for_high_state
-			check_for_half_state
-			check_for_low_state
-			check_for_very_low_state
-			check_for_critical_state
+			l_retry_count := 1
+			if l_retry_count <=3 then
+				update_energy
+				on_update.call([Current])
+				check_for_full_state
+				check_for_high_state
+				check_for_half_state
+				check_for_low_state
+				check_for_very_low_state
+				check_for_critical_state
+				check_for_state_change
+			else
+				(create {EXCEPTIONS}).die (3)
+			end
+		rescue
+			l_retry_count := l_retry_count + 1
+			retry
 		end
 
 feature {NONE} -- Implementation
@@ -189,9 +206,12 @@ feature {NONE} -- Implementation
 	is_critical_action_called:BOOLEAN
 			-- The `on_critical_action' has been called once since `is_critical' became True
 
+	last_state:READABLE_STRING_GENERAL
+			-- The last `state' value that the `on_state_change_action' has been called for.
+
 	read_line_from_file(a_file_name:READABLE_STRING_GENERAL; a_fatal:BOOLEAN):READABLE_STRING_GENERAL
 			-- Return the first line of the file whith the name `a_file_name'.
-			-- Die with code 3 on error if `a_fatal' is set
+			-- Die with code 4 on error if `a_fatal' is set
 		local
 			l_file:PLAIN_TEXT_FILE
 			l_exceptions:EXCEPTIONS
@@ -206,8 +226,19 @@ feature {NONE} -- Implementation
 				Result := ""
 				if a_fatal then
 					io.put_string (Error_file_not_readable + " (" + a_file_name + ").%N")
-					(create {EXCEPTIONS}).die(3)
+					(create {EXCEPTIONS}).die(4)
 				end
+			end
+		end
+
+	check_for_state_change
+		local
+			l_state:like state
+		do
+			l_state := state
+			if not l_state.is_equal (last_state) then
+				on_state_change_action.call ([])
+				last_state := l_state
 			end
 		end
 

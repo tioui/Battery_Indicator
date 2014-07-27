@@ -48,48 +48,49 @@ feature -- Access
 			set_tooltip (l_state + a_battery.percentage.out + "%%")
 		end
 
-	set_full_icon
-			-- Change `Current' image to {BATTERY_FULL_BUFFER}
+	set_icon(a_battery:BATTERY_DEVICE)
+			-- Change `Current' image using the values in a_battery
+		local
+			l_icon:EV_PIXEL_BUFFER
 		do
-			change_icon(create {BATTERY_FULL_BUFFER}.make)
-		end
-
-	set_high_icon
-			-- Change `Current' image to {BATTERY_HIGH_BUFFER}
-		do
-			change_icon(create {BATTERY_HIGH_BUFFER}.make)
-		end
-
-	set_half_icon
-			-- Change `Current' image to {BATTERY_HALF_BUFFER}
-		do
-			change_icon(create {BATTERY_HALF_BUFFER}.make)
-		end
-
-	set_low_icon
-			-- Change `Current' image to {BATTERY_LOW_BUFFER}
-		do
-			change_icon(create {BATTERY_LOW_BUFFER}.make)
-		end
-
-	set_very_low_icon
-			-- Change `Current' image to {BATTERY_VERY_LOW_BUFFER}
-		do
-			change_icon(create {BATTERY_VERY_LOW_BUFFER}.make)
-		end
-
-	set_critical_icon
-			-- Change `Current' image to {BATTERY_CRITICAL_BUFFER}
-		do
-			change_icon(create {BATTERY_CRITICAL_BUFFER}.make)
+			if a_battery.is_critical then
+				l_icon := create {BATTERY_CRITICAL_BUFFER}.make
+			elseif a_battery.is_very_low then
+				l_icon := create {BATTERY_VERY_LOW_BUFFER}.make
+			elseif a_battery.is_low then
+				l_icon := create {BATTERY_LOW_BUFFER}.make
+			elseif a_battery.is_half then
+				l_icon := create {BATTERY_HALF_BUFFER}.make
+			elseif a_battery.is_high then
+				l_icon := create {BATTERY_HIGH_BUFFER}.make
+			else
+				l_icon := create {BATTERY_FULL_BUFFER}.make
+			end
+			change_icon(not a_battery.is_discharging, l_icon)
 		end
 
 feature {NONE} -- Implementation
 
-	change_icon(a_icon_buffer: EV_PIXEL_BUFFER)
+	change_icon(a_with_plug:BOOLEAN;a_icon_buffer: EV_PIXEL_BUFFER)
 			-- Set the image icon of `Current' using `a_icon_buffer' as source.
+		local
+			l_pixmap:EV_PIXMAP
 		do
-			set_icon_from_pixmap (create {EV_PIXMAP}.make_with_pixel_buffer (a_icon_buffer))
+			create l_pixmap.make_with_pixel_buffer (a_icon_buffer)
+			if a_with_plug then
+				l_pixmap.draw_pixmap (0, 0, plug_pixmap)
+			end
+			set_icon_from_pixmap (l_pixmap)
 		end
+
+	plug_pixmap:EV_PIXMAP
+			-- Image of the plug.
+		local
+			l_plug_buffer:PLUG_BUFFER
+		once
+			create l_plug_buffer.make
+			create Result.make_with_pixel_buffer (l_plug_buffer)
+		end
+
 
 end

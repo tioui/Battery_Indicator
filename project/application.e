@@ -45,12 +45,13 @@ feature {NONE} -- Initialization
 		do
 			Precursor {EV_APPLICATION}
 			create l_battery
-			l_battery.on_full_action.extend (agent tray_icon.set_full_icon)
-			l_battery.on_high_action.extend (agent tray_icon.set_high_icon)
-			l_battery.on_half_action.extend (agent tray_icon.set_half_icon)
-			l_battery.on_low_action.extend (agent tray_icon.set_low_icon)
-			l_battery.on_very_low_action.extend (agent tray_icon.set_very_low_icon)
-			l_battery.on_critical_action.extend (agent tray_icon.set_critical_icon)
+			l_battery.on_full_action.extend (agent tray_icon.set_icon(l_battery))
+			l_battery.on_high_action.extend (agent tray_icon.set_icon(l_battery))
+			l_battery.on_half_action.extend (agent tray_icon.set_icon(l_battery))
+			l_battery.on_low_action.extend (agent tray_icon.set_icon(l_battery))
+			l_battery.on_very_low_action.extend (agent tray_icon.set_icon(l_battery))
+			l_battery.on_critical_action.extend (agent tray_icon.set_icon(l_battery))
+			l_battery.on_state_change_action.extend (agent tray_icon.set_icon(l_battery))
 			l_battery.on_update.extend (agent tray_icon.set_power_tooltip)
 			l_battery.on_critical_action.extend (agent on_low_power(l_battery))
 			tray_icon.activate_action.extend (agent on_click_tray_icon)
