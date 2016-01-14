@@ -9,10 +9,10 @@ deferred class
 
 feature -- Access
 
-	File_energy_full: STRING = "/sys/class/power_supply/BAT0/energy_full"
+	File_energy_full: STRING = "/sys/class/power_supply/BAT0/charge_full"
 			-- The name of the device file to get full energy value
 
-	File_energy_now: STRING = "/sys/class/power_supply/BAT0/energy_now"
+	File_energy_now: STRING = "/sys/class/power_supply/BAT0/charge_now"
 			-- The name of the device file to get current energy value
 
 	File_status: STRING = "/sys/class/power_supply/BAT0/status"

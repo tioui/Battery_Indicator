@@ -214,7 +214,6 @@ feature {NONE} -- Implementation
 			-- Die with code 4 on error if `a_fatal' is set
 		local
 			l_file:PLAIN_TEXT_FILE
-			l_exceptions:EXCEPTIONS
 		do
 			create l_file.make_with_name (a_file_name)
 			if l_file.exists and then l_file.is_readable then

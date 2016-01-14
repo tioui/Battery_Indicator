@@ -292,4 +292,4 @@ feature {NONE} -- Image data filling.
 			end
 		end
 
-end -- BATTERY_CRITICAL_BUFFER
+end -- BAT0
