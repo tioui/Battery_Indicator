@@ -129,7 +129,7 @@ feature -- Access
 	is_critical:BOOLEAN
 			-- `Current' `energy' is criticaly low
 		do
-			Result := percentage <= 5
+			Result := percentage <= value_critical
 		end
 
 	max_energy:NATURAL_64

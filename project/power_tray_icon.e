@@ -78,7 +78,7 @@ feature {NONE} -- Implementation
 		do
 			create l_pixmap.make_with_pixel_buffer (a_icon_buffer)
 			if a_with_plug then
-				l_pixmap.draw_pixmap (0, 0, plug_pixmap)
+				l_pixmap.draw_pixmap ((l_pixmap.width // 2) - (plug_pixmap.width // 2), (l_pixmap.height // 2) - (plug_pixmap.height // 2), plug_pixmap)
 			end
 			set_icon_from_pixmap (l_pixmap)
 		end

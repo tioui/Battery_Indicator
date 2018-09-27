@@ -27,6 +27,7 @@ feature {NONE} -- Initialization
 	make_and_launch
 			-- Initialize and launch application
 		do
+			(create {PLUG_BUFFER}.make).save_to_named_file("test.png")
 			default_create
 			launch
 		end

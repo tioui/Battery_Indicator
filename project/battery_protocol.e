@@ -9,13 +9,13 @@ deferred class
 
 feature -- Access
 
-	File_energy_full: STRING = "/sys/class/power_supply/BAT0/charge_full"
+	File_energy_full: STRING = "/sys/class/power_supply/BAT1/charge_full"
 			-- The name of the device file to get full energy value
 
-	File_energy_now: STRING = "/sys/class/power_supply/BAT0/charge_now"
+	File_energy_now: STRING = "/sys/class/power_supply/BAT1/charge_now"
 			-- The name of the device file to get current energy value
 
-	File_status: STRING = "/sys/class/power_supply/BAT0/status"
+	File_status: STRING = "/sys/class/power_supply/BAT1/status"
 			-- The name of the device file to get battery status
 
 	Value_Charging: STRING = "charging"
@@ -24,20 +24,20 @@ feature -- Access
 	Value_Discharging: STRING = "discharging"
 			-- The value retreive from `File_status' when the battery is discharging
 
-	Value_critical: NATURAL_8 = 5
+	Value_critical: NATURAL_8 = 10
 			-- The percentage value when the battery became criticaly low
 
-	Value_very_low: NATURAL_8 = 15
+	Value_very_low: NATURAL_8 = 35
 			-- The percentage value when the battery became very low
 
-	Value_low: NATURAL_8 = 35
+	Value_low: NATURAL_8 = 50
 			-- The percentage value when the battery became low
 
-	Value_half: NATURAL_8 = 65
+	Value_half: NATURAL_8 = 75
 			-- The percentage value when the battery get to the half
 
 	Value_high: NATURAL_8 = 90
-			-- The percentage value when the battery became criticaly low
+			-- The percentage value when the battery became high
 
 
 
