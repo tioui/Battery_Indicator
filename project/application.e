@@ -27,7 +27,6 @@ feature {NONE} -- Initialization
 	make_and_launch
 			-- Initialize and launch application
 		do
-			(create {PLUG_BUFFER}.make).save_to_named_file("test.png")
 			default_create
 			launch
 		end
@@ -106,7 +105,10 @@ feature {NONE} -- Implementation
 		do
 			if a_battery.is_discharging then
 				create l_message_box.make_with_text (Warning_low_battery)
-				l_message_box.set_buttons_and_actions (<<Button_ok_item>>, <<agent l_message_box.destroy>>)
+				l_message_box.set_buttons_and_actions (
+										{ARRAY[READABLE_STRING_GENERAL]}<<Button_ok_item>>,
+										{ARRAY[detachable PROCEDURE]}<<agent l_message_box.destroy>>
+									)
 				l_message_box.show
 				l_message_box.raise
 			end
